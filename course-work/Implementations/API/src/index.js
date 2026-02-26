@@ -1,7 +1,9 @@
+import cors from 'cors';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 
-const hostname = 'localhost';
-const port = 3000;
+import { HOST_NAME, PORT, CLIENT_ORIGIN, DB_CONFIG } from './config/constants.js';
+import { createNewConnection, closeConnection } from './config/db.js';
 
 const app = express();
 
@@ -12,12 +14,30 @@ app.use(express.json());
 app.use(cookieParser());
 
 // enables CORS and allow cookies and credentials to be included in requests
-app.use(cors({ origin: TODO_APP_ORIGIN, credentials: true }));
+app.use(cors({ origin: CLIENT_ORIGIN, credentials: true }));
 
+try {
+  const mysqlConnection = await createNewConnection(DB_CONFIG);
+
+  process.on('SIGINT', async () => {
+    try {
+      await closeConnection(mysqlConnection);
+      process.exit(0);
+    } catch (err) {
+      console.error('❌ error closing connection: ', err);
+      process.exit(1);
+    }
+  });
+} catch (err) {
+  console.error(err);
+  process.exit(1);
+}
+
+// endpoints
 app.get('/', (req, res) => {
-  res.sendStatus(200);
+  res.send('hello from express!');
 });
 
-app.listen(port, hostname, (err) => {
-  console.log(err ?? `server running at http://${hostname}:${port}`);
+app.listen(PORT, HOST_NAME, (err) => {
+  console.log(err ?? `server running at http://${HOST_NAME}:${PORT}`);
 });
