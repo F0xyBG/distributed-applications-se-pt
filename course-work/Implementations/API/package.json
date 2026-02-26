@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "description": "pet-finder-api",
   "main": "src/index.js",
+  "author": "mehmed yunuz <stu2401322028@uni-plovdiv.bg>",
+  "license": "ISC",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev-server": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "bcrypt": "~6.0.0",
     "cookie-parser": "~1.4.7",
@@ -12,11 +19,6 @@
     "jsonwebtoken": "~9.0.3",
     "mysql2": "~3.18.1"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "mehmed yunuz <stu2401322028@uni-plovdiv.bg>",
-  "license": "ISC",
   "devDependencies": {
     "nodemon": "~3.1.14"
   }
