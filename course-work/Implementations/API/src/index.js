@@ -5,6 +5,13 @@ import cookieParser from 'cookie-parser';
 import { HOST_NAME, PORT, CLIENT_ORIGIN, DB_CONFIG } from './config/constants.js';
 import { createNewConnection, closeConnection } from './config/db.js';
 
+// models
+import User from './models/User.js';
+
+// controllers
+import * as authController from './controllers/authController.js';
+import { authenticateToken } from './middlewares/auth.js';
+
 const app = express();
 
 // allows the server to accept JSON data in the body of the request
@@ -18,6 +25,10 @@ app.use(cors({ origin: CLIENT_ORIGIN, credentials: true }));
 
 try {
   const mysqlConnection = await createNewConnection(DB_CONFIG);
+
+  User.setConnection(mysqlConnection);
+
+  await User.initTable();
 
   process.on('SIGINT', async () => {
     try {
@@ -35,9 +46,15 @@ try {
 
 // endpoints
 app.get('/', (req, res) => {
-  res.send('hello from express!');
+  res.status(200).json({ message: 'hello from express!' });
 });
 
+// auth
+app.post('/auth/register', authController.register);
+app.post('/auth/login', authController.login);
+app.post('/auth/logout', authController.logout);
+
+// start the server
 app.listen(PORT, HOST_NAME, (err) => {
   console.log(err ?? `server running at http://${HOST_NAME}:${PORT}`);
 });
