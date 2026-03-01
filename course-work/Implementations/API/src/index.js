@@ -10,6 +10,9 @@ import User from './models/User.js';
 
 // controllers
 import * as authController from './controllers/authController.js';
+import * as userController from './controllers/userController.js';
+
+// middlewares
 import { authenticateToken } from './middlewares/auth.js';
 
 const app = express();
@@ -53,6 +56,11 @@ app.get('/', (req, res) => {
 app.post('/auth/register', authController.register);
 app.post('/auth/login', authController.login);
 app.post('/auth/logout', authController.logout);
+
+// user
+app.get('/user', authenticateToken, userController.getUser);
+app.patch('/user', authenticateToken, userController.updateUser);
+app.delete('/user', authenticateToken, userController.deleteUser);
 
 // start the server
 app.listen(PORT, HOST_NAME, (err) => {

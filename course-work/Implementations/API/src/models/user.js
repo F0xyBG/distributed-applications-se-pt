@@ -48,6 +48,13 @@ class User {
     return rows.length ? rows[0] : null;
   }
 
+  static async findById(id) {
+    const query = 'SELECT username, name, registered, isAdult, phone FROM users WHERE id = ?';
+    const [rows] = await this.#connection.execute(query, [id]);
+
+    return rows.length ? rows[0] : null;
+  }
+
   static async updateById(id, updatedFields) {
     const { username, password, name, isAdult, phone } = updatedFields;
 
