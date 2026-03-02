@@ -1,8 +1,10 @@
+import bcrypt from 'bcrypt';
+
 import User from '../models/User.js';
-import { ACCESS_TOKEN_NAME, NODE_ENV } from '../config/constants.js';
+import { ACCESS_TOKEN_NAME, NODE_ENV, SALT_ROUNDS } from '../config/constants.js';
 
 export const getUser = async (req, res) => {
-  const { id } = req.user;
+  const id = req.user.id;
 
   try {
     const userData = await User.findById(id);
@@ -19,10 +21,15 @@ export const getUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  const { id } = req.user;
+  const id = req.user.id;
+  const updatedFields = req.body;
 
   try {
-    const isUpdated = await User.updateById(id, req.body);
+    if (updatedFields.password) {
+      updatedFields.password = await bcrypt.hash(updatedFields.password, SALT_ROUNDS);
+    }
+
+    const isUpdated = await User.updateById(id, updatedFields);
 
     if (!isUpdated) {
       return res.sendStatus(400);
@@ -36,7 +43,7 @@ export const updateUser = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-  const { id } = req.user;
+  const id = req.user.id;
 
   try {
     const isDeleted = await User.deleteById(id);
