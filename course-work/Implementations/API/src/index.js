@@ -11,11 +11,13 @@ import { createNewConnection, closeConnection } from './config/db.js';
 // models
 import User from './models/User.js';
 import Post from './models/Post.js';
+import Comment from './models/Comment.js';
 
 // controllers
 import * as authController from './controllers/authController.js';
 import * as userController from './controllers/userController.js';
 import * as postController from './controllers/postController.js';
+import * as commentController from './controllers/commentController.js';
 
 // middlewares
 import { authenticateToken } from './middlewares/auth.js';
@@ -52,9 +54,11 @@ try {
 
   User.setConnection(mysqlConnection);
   Post.setConnection(mysqlConnection);
+  Comment.setConnection(mysqlConnection);
 
   await User.initTable();
   await Post.initTable();
+  await Comment.initTable();
 
   process.on('SIGINT', async () => {
     try {
@@ -91,6 +95,12 @@ app.get('/posts/:id', authenticateToken, postController.getUserPosts);
 app.post('/posts', authenticateToken, upload.single('image'), postController.createPost);
 app.patch('/posts/:id', authenticateToken, upload.single('image'), postController.updatePost);
 app.delete('/posts/:id', authenticateToken, postController.deletePost);
+
+// comments
+app.get('/comments/:postId', authenticateToken, commentController.getComments);
+app.post('/comments', authenticateToken, commentController.createComment);
+app.patch('/comments/:id', authenticateToken, commentController.updateComment);
+app.delete('/comments/:id', authenticateToken, commentController.deleteComment);
 
 // start the server
 app.listen(PORT, HOST_NAME, (err) => {
