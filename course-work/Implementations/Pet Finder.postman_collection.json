@@ -1,0 +1,369 @@
+{
+  "info": {
+    "_postman_id": "276c2752-50f1-4653-8b6e-cf02342aad7b",
+    "name": "Pet Finder",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "25171502"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"Pesho\",\r\n    \"password\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/auth/login",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"Toshko\",\r\n    \"password\": \"1234\",\r\n    \"name\": \"Tosho\",\r\n    \"isAdult\": true,\r\n    \"phone\": \"0896872567\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/auth/register",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/auth/logout",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/user",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"Pesho\",\r\n    \"password\": \"1234\",\r\n    \"name\": \"Pencho\",\r\n    \"isAdult\": true,\r\n    \"phone\": \"0896872567\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/user",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/user",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "user"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Get Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/posts",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/posts/2",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "posts",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Гошко се е изгубил",
+                  "type": "text",
+                  "uuid": "5626de31-5818-4a5d-b9f9-9e97fcfd7f6b"
+                },
+                {
+                  "key": "description",
+                  "value": "Гошко много ни липсва, загубихме го в Перник",
+                  "type": "text",
+                  "uuid": "705df529-67bb-494f-8e64-39ca78292053"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "351ba52e-32f5-40b9-8f8e-3d1d6ecae420",
+                  "src": "/C:/Users/Simeon/Downloads/images.webp"
+                },
+                {
+                  "key": "category",
+                  "value": "dog",
+                  "type": "text",
+                  "uuid": "8c82f22f-1688-42f8-a24e-ca9b7ff681b6"
+                },
+                {
+                  "key": "lostAt",
+                  "value": "Pernik",
+                  "type": "text",
+                  "uuid": "38c68987-c4d0-41d0-863f-f2d3d79dbb4e"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/posts",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Post",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Пенчо се е изгубил",
+                  "type": "text",
+                  "uuid": "5626de31-5818-4a5d-b9f9-9e97fcfd7f6b",
+                  "disabled": true
+                },
+                {
+                  "key": "description",
+                  "value": "Пенчо много ни липсва, загубихме го в Перник",
+                  "type": "text",
+                  "uuid": "705df529-67bb-494f-8e64-39ca78292053"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "351ba52e-32f5-40b9-8f8e-3d1d6ecae420",
+                  "src": "/C:/Users/Simeon/Downloads/images.webp",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "dog",
+                  "type": "text",
+                  "uuid": "8c82f22f-1688-42f8-a24e-ca9b7ff681b6",
+                  "disabled": true
+                },
+                {
+                  "key": "lostAt",
+                  "value": "Pernik",
+                  "type": "text",
+                  "uuid": "38c68987-c4d0-41d0-863f-f2d3d79dbb4e"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/posts",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/posts/3",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "posts",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "url",
+      "value": ""
+    }
+  ]
+}

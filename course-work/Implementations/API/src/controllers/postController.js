@@ -91,7 +91,7 @@ export const deletePost = async (req, res) => {
       return res.sendStatus(401);
     }
 
-    const isDeleted = await Post.deleteById(id);
+    const isDeleted = await Post.deleteById(postId);
 
     if (!isDeleted) {
       return res.sendStatus(400);

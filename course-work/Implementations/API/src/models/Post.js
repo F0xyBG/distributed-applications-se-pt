@@ -43,7 +43,7 @@ class Post {
 
     const [rows] = await this.#connection.execute(query);
 
-    return rows.length ? rows[0] : [];
+    return rows.length ? rows : [];
   }
 
   static async getPostsByAuthorId(authorId) {
@@ -51,7 +51,7 @@ class Post {
 
     const [rows] = await this.#connection.execute(query, [authorId]);
 
-    return rows.length ? rows[0] : [];
+    return rows.length ? rows : [];
   }
 
   static async create(post) {

@@ -2,6 +2,7 @@
   "name": "pet-finder-api",
   "version": "1.0.0",
   "description": "pet-finder-api",
+  "type": "module",
   "main": "src/index.js",
   "author": "mehmed yunuz <stu2401322028@uni-plovdiv.bg>",
   "license": "ISC",
