@@ -26,7 +26,7 @@ export const getUserPosts = async (req, res) => {
 };
 
 export const createPost = async (req, res) => {
-  const image = `http://${HOST_NAME}:${PORT}/public/${req.file.filename}`;
+  const image = `http://${HOST_NAME}:${PORT}/${req.file.filename}`;
 
   const post = {
     author_id: req.user.id,
