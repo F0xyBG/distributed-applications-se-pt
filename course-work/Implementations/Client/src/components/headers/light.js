@@ -89,7 +89,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
     <NavLinks key={1}>
       <NavLink href="/">Home</NavLink>
       <NavLink href="/components/innerPages/PostsIndexPage">Posts</NavLink>
-      <NavLink href="/#">Pricing</NavLink>
+      <NavLink href="/components/innerPages/CreatePostPage">Create Post</NavLink>
       <NavLink href="/#">Contact Us</NavLink>
       {!hasClientSession && (
         <NavLink href="/components/innerPages/LoginPage" tw="lg:ml-12!">

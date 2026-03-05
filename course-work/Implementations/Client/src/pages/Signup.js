@@ -116,10 +116,15 @@ export default ({
             <Heading>{headingText}</Heading>
             <FormContainer>
               <Form onSubmit={handleSubmit}>
+                <label htmlFor="username-input">Username</label>
                 <Input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+                <label htmlFor="password-input">Password</label>
                 <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+                <label htmlFor="name-input">Name</label>
                 <Input type="text" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+                <label htmlFor="phone-input">Phone</label>
                 <Input type="phone" placeholder="Phone" value={phone} onChange={e => setPhone(e.target.value)} />
+                <label htmlFor="dateOfBirth-input">Date of Birth</label>
                 <Input type="date" placeholder="Date of Birth" value={dateOfBirth} onChange={e => {setDateOfBirth(e.target.value)}} />
                 <SubmitButton type="submit">
                   <SubmitButtonIcon className="icon" />

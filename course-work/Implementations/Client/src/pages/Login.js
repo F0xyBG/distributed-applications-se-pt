@@ -45,7 +45,6 @@ export default ({
   headingText = "Sign In To PetFinder",
   submitButtonText = "Sign In",
   SubmitButtonIcon = LoginIcon,
-  forgotPasswordUrl = "#",
   signupUrl = "/components/innerPages/SignupPage",
 
 }) => {
@@ -91,7 +90,9 @@ export default ({
             <Heading>{headingText}</Heading>
             <FormContainer>
               <Form onSubmit={handleSubmit}>
+                <label htmlFor="username-input">Username</label>
                 <Input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+                <label htmlFor="password-input">Password</label>
                 <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
                 <SubmitButton type="submit">
                   <SubmitButtonIcon className="icon" />

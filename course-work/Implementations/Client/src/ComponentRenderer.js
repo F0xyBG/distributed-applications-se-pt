@@ -25,6 +25,7 @@ import PricingPage from "pages/Pricing.js";
 import AboutUsPage from "pages/AboutUs.js";
 import ContactUsPage from "pages/ContactUs.js";
 import PostsIndexPage from "pages/PostsIndex.js";
+import CreatePostPage from "pages/CreatePost.js";
 import TermsOfServicePage from "pages/TermsOfService.js";
 import PrivacyPolicyPage from "pages/PrivacyPolicy.js";
 
@@ -84,7 +85,7 @@ import SimpleWithSideImageFAQS from "components/faqs/SimpleWithSideImage.js";
 import SingleColFAQS from "components/faqs/SingleCol.js";
 import TwoColumnPrimaryBackgroundFAQS from "components/faqs/TwoColumnPrimaryBackground.js";
 
-import SimpleContactUsForm from "components/forms/SimpleContactUs.js";
+import SimpleContactUsForm from "components/forms/CreatePostForm.js";
 import SimpleSubscribeNewsletterForm from "components/forms/SimpleSubscribeNewsletter.js";
 import TwoColContactUsForm from "components/forms/TwoColContactUsWithIllustration.js";
 import TwoColContactUsFullForm from "components/forms/TwoColContactUsWithIllustrationFullForm.js";
@@ -171,6 +172,10 @@ export const components = {
       component: PostsIndexPage,
       url: `/components/innerPages/PostsIndexPage`,
       imageSrc: PostsIndexPageImageSrc,
+    },
+    CreatePostPage: {
+      component: CreatePostPage,
+      url: `/components/innerPages/CreatePostPage`,
     },
     TermsOfServicePage: {
       component: TermsOfServicePage,
