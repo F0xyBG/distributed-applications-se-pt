@@ -9,6 +9,8 @@ import logo from "images/logo.svg";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
+
 
 
 const Container = tw(ContainerBase)`min-h-screen bg-primary-900 text-white font-medium flex justify-center -m-8`;
@@ -69,6 +71,7 @@ export default ({
     .then(response => response.json())
     .then(response => {
       // console.log('Success:', response);
+      Cookies.set('logged_in', 'true', { expires: 1/24 });
       navigate("/", { replace: true });
     })
     .catch((error) => {

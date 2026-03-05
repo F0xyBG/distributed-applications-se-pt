@@ -9,6 +9,16 @@ import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
 import logo from "../../images/logo.svg";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
+import Cookies from 'js-cookie';
+
+
+const ProcessSignOut = async () => {
+  await fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/auth/logout` , {
+    method: 'POST',
+    credentials: 'include',
+  });
+  Cookies.remove('logged_in');
+};
 
 const Header = tw.header`
   flex justify-between items-center
@@ -70,16 +80,33 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
    * changing the defaultLinks variable below below.
    * If you manipulate links here, all the styling on the links is already done for you. If you pass links yourself though, you are responsible for styling the links or use the helper styled components that are defined here (NavLink)
    */
+  
+  
+  const hasClientSession =
+    typeof window !== "undefined" && Cookies.get('logged_in') === 'true';
+
   const defaultLinks = [
     <NavLinks key={1}>
       <NavLink href="/">Home</NavLink>
       <NavLink href="/components/innerPages/BlogIndexPage">Blog</NavLink>
       <NavLink href="/#">Pricing</NavLink>
       <NavLink href="/#">Contact Us</NavLink>
-      <NavLink href="/components/innerPages/LoginPage" tw="lg:ml-12!">
-        Login
-      </NavLink>
-      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/components/innerPages/SignupPage">Sign Up</PrimaryLink>
+      {!hasClientSession && (
+        <NavLink href="/components/innerPages/LoginPage" tw="lg:ml-12!">
+          Login
+        </NavLink>
+      )}
+      {!hasClientSession && (
+        <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/components/innerPages/SignupPage">
+          Sign Up
+        </PrimaryLink>
+      )}
+      
+      {hasClientSession && (
+        <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/" onClickCapture={ProcessSignOut}>
+          Sign Out
+        </PrimaryLink>
+      )}
     </NavLinks>
   ];
 
@@ -89,7 +116,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
   const defaultLogoLink = (
     <LogoLink href="/">
       <img src={logo} alt="logo" />
-      Treact
+      PetFinder
     </LogoLink>
   );
 
