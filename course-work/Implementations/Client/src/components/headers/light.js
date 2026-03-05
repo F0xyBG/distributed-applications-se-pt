@@ -88,7 +88,7 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
   const defaultLinks = [
     <NavLinks key={1}>
       <NavLink href="/">Home</NavLink>
-      <NavLink href="/components/innerPages/BlogIndexPage">Blog</NavLink>
+      <NavLink href="/components/innerPages/PostsIndexPage">Posts</NavLink>
       <NavLink href="/#">Pricing</NavLink>
       <NavLink href="/#">Contact Us</NavLink>
       {!hasClientSession && (

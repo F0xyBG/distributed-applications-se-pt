@@ -1,5 +1,5 @@
 {
-  "name": "treact",
+  "name": "PetFinder",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -23,6 +23,7 @@
     "tailwindcss": "^3.0.0",
     "twin.macro": "^3.0.0-rc.4"
   },
+  "author": "Simeon Teremkov <stu2401322016@uni-plovdiv.bg>",
   "scripts": {
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "build": "react-scripts build",

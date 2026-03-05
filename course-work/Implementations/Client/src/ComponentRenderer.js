@@ -24,7 +24,7 @@ import SignupPage from "pages/Signup.js";
 import PricingPage from "pages/Pricing.js";
 import AboutUsPage from "pages/AboutUs.js";
 import ContactUsPage from "pages/ContactUs.js";
-import BlogIndexPage from "pages/BlogIndex.js";
+import PostsIndexPage from "pages/PostsIndex.js";
 import TermsOfServicePage from "pages/TermsOfService.js";
 import PrivacyPolicyPage from "pages/PrivacyPolicy.js";
 
@@ -33,7 +33,7 @@ import SignupPageImageSrc from "images/demo/SignupPage.jpeg";
 import PricingPageImageSrc from "images/demo/PricingPage.jpeg";
 import AboutUsPageImageSrc from "images/demo/AboutUsPage.jpeg";
 import ContactUsPageImageSrc from "images/demo/ContactUsPage.jpeg";
-import BlogIndexPageImageSrc from "images/demo/BlogIndexPage.jpeg";
+import PostsIndexPageImageSrc from "images/demo/PostsIndexPage.jpeg";
 import TermsOfServicePageImageSrc from "images/demo/TermsOfServicePage.jpeg";
 import PrivacyPolicyPageImageSrc from "images/demo/PrivacyPolicyPage.jpeg";
 
@@ -167,10 +167,10 @@ export const components = {
       url: `/components/innerPages/ContactUsPage`,
       imageSrc: ContactUsPageImageSrc,
     },
-    BlogIndexPage: {
-      component: BlogIndexPage,
-      url: `/components/innerPages/BlogIndexPage`,
-      imageSrc: BlogIndexPageImageSrc,
+    PostsIndexPage: {
+      component: PostsIndexPage,
+      url: `/components/innerPages/PostsIndexPage`,
+      imageSrc: PostsIndexPageImageSrc,
     },
     TermsOfServicePage: {
       component: TermsOfServicePage,
