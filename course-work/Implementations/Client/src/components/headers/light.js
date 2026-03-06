@@ -17,7 +17,7 @@ const ProcessSignOut = async () => {
     method: 'POST',
     credentials: 'include',
   });
-  Cookies.remove('logged_in');
+  Cookies.remove('user_id');
 };
 
 const Header = tw.header`
@@ -83,14 +83,22 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
   
   
   const hasClientSession =
-    typeof window !== "undefined" && Cookies.get('logged_in') === 'true';
+    typeof window !== "undefined" && Cookies.get('user_id') !== undefined;
 
   const defaultLinks = [
     <NavLinks key={1}>
-      <NavLink href="/">Home</NavLink>
-      <NavLink href="/components/innerPages/PostsIndexPage">Posts</NavLink>
-      <NavLink href="/components/innerPages/CreatePostPage">Create Post</NavLink>
-      <NavLink href="/#">Contact Us</NavLink>
+      {hasClientSession && (
+        <NavLink href="/">Home</NavLink>
+      )}
+      {hasClientSession && (
+        <NavLink href="/components/innerPages/PostsIndexPage">Posts</NavLink>
+      )}
+      {hasClientSession && (
+        <NavLink href="/components/innerPages/CreatePostPage">Create Post</NavLink>
+      )}
+      {hasClientSession && (
+        <NavLink href="/#">Contact Us</NavLink>
+      )}
       {!hasClientSession && (
         <NavLink href="/components/innerPages/LoginPage" tw="lg:ml-12!">
           Login

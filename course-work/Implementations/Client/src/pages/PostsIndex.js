@@ -8,7 +8,8 @@ import Header from "components/headers/light.js";
 import Footer from "components/footers/FiveColumnWithInputForm.js";
 import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton } from "components/misc/Buttons";
-import { use } from "react";
+import Cookies from 'js-cookie';
+import { Navigate } from "react-router-dom";
 
 const HeadingRow = tw.div`flex`;
 const Heading = tw(SectionHeading)`text-gray-900`;
@@ -50,6 +51,13 @@ const LoadMoreButton = tw(PrimaryButton)`mt-16 mx-auto`;
 export default ({
   headingText = "Posts"
 }) => {
+  const userId = Cookies.get("user_id");
+  
+    if (!userId) {
+      console.log("User ID:", userId);
+      return <Navigate to="/" replace />;
+    }
+
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -68,7 +76,6 @@ export default ({
           description: post.description,
         }));
         setPosts(data);
-        console.log('Fetched posts:', data);
       })
       .catch((error) => {
         console.error('Error fetching posts:', error);

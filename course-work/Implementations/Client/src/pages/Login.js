@@ -70,7 +70,7 @@ export default ({
     .then(response => response.json())
     .then(response => {
       // console.log('Success:', response);
-      Cookies.set('logged_in', 'true', { expires: 1/24 });
+      Cookies.set('user_id', response.id, { expires: 1/24 });
       navigate("/", { replace: true });
     })
     .catch((error) => {

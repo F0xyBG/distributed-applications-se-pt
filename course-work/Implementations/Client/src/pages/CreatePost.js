@@ -6,9 +6,17 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import Header from "components/headers/light.js";
 import Footer from "components/footers/FiveColumnWithInputForm.js";
 import CreatePostForm from "components/forms/CreatePostForm";
-
+import Cookies from 'js-cookie';
+import { Navigate } from "react-router-dom";
 
 export default () => {
+  const userId = Cookies.get("user_id");
+
+  if (!userId) {
+    console.log("User ID:", userId);
+    return <Navigate to="/" replace />;
+  }
+  
   return (
     <AnimationRevealPage>
       <Header />
