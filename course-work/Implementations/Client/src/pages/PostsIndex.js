@@ -34,7 +34,7 @@ const PostContainer = styled.div`
       }
     `}
 `;
-const Post = tw.div`cursor-pointer flex flex-col bg-gray-100 rounded-lg`;
+const Post = tw.div`cursor-pointer flex flex-col bg-gray-100 rounded-lg border-none text-left p-0`;
 const Image = styled.div`
   ${props => css`background-image: url("${props.imageSrc}");`}
   ${tw`h-64 w-full bg-cover bg-center rounded-t-lg`}
@@ -71,9 +71,12 @@ export default ({
         data = data.map(post => ({
           imageSrc: post.image,
           category: post.category,
+          lostAt: post.lostAt,
+          dateRaw: post.date,
           date: formatDate(post.date),
           title: post.title,
           description: post.description,
+          url: `/posts/${post.id || post._id}`
         }));
         setPosts(data);
       })
@@ -96,12 +99,13 @@ export default ({
           <Posts>
             {posts.slice(0, visible).map((post, index) => (
               <PostContainer key={index} featured={post.featured}>
-                <Post className="group" as="a">
+                <Post className="group" as="a" href={post.url}>
                   <Image imageSrc={post.imageSrc} />
                   <Info>
                     <Category>{post.category}</Category>
                     <CreationDate>{post.date}</CreationDate>
                     <Title>{post.title}</Title>
+                    {post.lostAt && <Description>Lost at: {post.lostAt}</Description>}
                     {post.description && <Description>{post.description}</Description>}
                   </Info>
                 </Post>
@@ -122,5 +126,5 @@ export default ({
 
 const formatDate = (date) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(date).toLocaleDateString(options);
+  return new Date(date).toLocaleDateString(undefined, options);
 }

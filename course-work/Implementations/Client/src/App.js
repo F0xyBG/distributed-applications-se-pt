@@ -101,6 +101,7 @@ import SaaSProductLandingPage from "demos/SaaSProductLandingPage.js";
 // import PrivacyPolicyPage from "pages/PrivacyPolicy.js";
 
 import ComponentRenderer from "ComponentRenderer.js";
+import PostViewPage from "pages/PostView.js";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -116,6 +117,7 @@ export default function App() {
         <Routes>
           <Route path="/components/:type/:subtype/:name" element={<ComponentRenderer />} />
           <Route path="/components/:type/:name" element={<ComponentRenderer />} />
+          <Route path="/posts/:postId" element={<PostViewPage />} />
           <Route path="/" element={<SaaSProductLandingPage />} />
         </Routes>
       </Router>
