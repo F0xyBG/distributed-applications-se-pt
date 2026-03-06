@@ -19,6 +19,7 @@ const FullImage = tw.img`w-full h-full object-contain`;
 const Description = tw.p`mt-8 p-4 border border-gray-200 rounded-lg bg-gray-200 text-base text-gray-700 leading-loose whitespace-pre-wrap`;
 const EmptyImage = tw.div`mt-8 h-80 w-full rounded-lg bg-gray-200 flex items-center justify-center text-gray-600`;
 const ActionsRow = tw.div`mt-10`;
+const TopBackRow = tw.div`mb-4 flex justify-start`;
 const OwnerActionsRow = tw.div`mt-6 flex flex-wrap gap-3`;
 const Form = tw.form`mt-8 p-6 border border-gray-200 rounded-lg bg-gray-500`;
 const FormRow = tw.div`mt-4`;
@@ -29,6 +30,20 @@ const SelectInput = tw.select`w-full border border-gray-300 rounded px-3 py-2 fo
 const SecondaryButton = tw(PrimaryButton)`bg-gray-600 hover:bg-gray-700 focus:bg-gray-700`;
 const DangerButton = tw(PrimaryButton)`bg-red-600 hover:bg-red-700 focus:bg-red-700`;
 const SuccessText = tw.p`mt-4 text-green-700 font-medium`;
+const CommentsSection = tw.div`mt-12`;
+const CommentsHeading = tw.h2`text-2xl font-bold text-gray-900`;
+const CommentForm = tw.form`mt-4 p-4 border border-gray-200 rounded-lg bg-gray-500`;
+const CommentList = tw.div`mt-6 space-y-4`;
+const CommentCard = tw.div`p-4 border border-gray-200 rounded-lg bg-white`;
+const CommentHeader = tw.div`flex items-start justify-between gap-3`;
+const CommentMeta = tw.p`text-sm text-gray-600`;
+const CommentText = tw.p`mt-2 text-gray-800 whitespace-pre-wrap`;
+const SmallActionsRow = tw.div`mt-3 flex flex-wrap gap-2`;
+const SmallActionsTopRow = tw.div`flex flex-wrap gap-2 justify-end`;
+const SmallButton = tw.button`px-3 py-2 rounded bg-primary-500 text-white text-sm font-semibold hover:bg-primary-700 disabled:opacity-50`;
+const SmallDangerButton = tw.button`px-3 py-2 rounded bg-red-600 text-white text-sm font-semibold hover:bg-red-700 disabled:opacity-50`;
+const CommentTextArea = tw.textarea`w-full border border-gray-300 rounded px-3 py-2 h-24 resize-none focus:outline-none focus:border-primary-500`;
+const CommentsInfoText = tw.p`mt-3 text-sm text-gray-700`;
 
 export default function PostView({ headingText = "Post Details" }) {
   const { postId } = useParams();
@@ -50,6 +65,58 @@ export default function PostView({ headingText = "Post Details" }) {
     isFound: false
   });
   const [editImageFile, setEditImageFile] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
+  const [commentsError, setCommentsError] = useState("");
+  const [newCommentText, setNewCommentText] = useState("");
+  const [isAddingComment, setIsAddingComment] = useState(false);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingCommentText, setEditingCommentText] = useState("");
+  const [commentActionError, setCommentActionError] = useState("");
+  const [commentActionSuccess, setCommentActionSuccess] = useState("");
+  const [isUpdatingComment, setIsUpdatingComment] = useState(false);
+  const [isDeletingCommentId, setIsDeletingCommentId] = useState(null);
+
+  const commentsBaseUrl = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/comments`;
+
+  const loadComments = async currentPostId => {
+    if (!currentPostId) {
+      setComments([]);
+      return;
+    }
+
+    setIsCommentsLoading(true);
+    setCommentsError("");
+
+    try {
+      const response = await fetch(`${commentsBaseUrl}/${currentPostId}`, {
+        method: "GET",
+        credentials: "include"
+      });
+
+      if (!response.ok) {
+        throw new Error(`Unable to load comments (${response.status})`);
+      }
+
+      const data = await response.json();
+      const fetchedComments = Array.isArray(data) ? data : data.comments || [];
+
+      setComments(
+        fetchedComments.map(comment => ({
+          id: comment.id || comment._id,
+          comment: comment.comment || "",
+          dateRaw: comment.date,
+          date: formatDateTime(comment.date),
+          author_name: comment.author_name || "Unknown",
+          author_id: comment.author_id
+        }))
+      );
+    } catch (loadError) {
+      setCommentsError(loadError.message || "Failed to load comments.");
+    } finally {
+      setIsCommentsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!postId) {
@@ -113,11 +180,16 @@ export default function PostView({ headingText = "Post Details" }) {
       });
   }, [postId]);
 
+  useEffect(() => {
+    loadComments(postId);
+  }, [postId]);
+
   if (!userId) {
     return <Navigate to="/" replace />;
   }
 
   const isOwner = post && Number(post.author_id) === Number(userId);
+  const canManageComment = comment => Number(comment.author_id) === Number(userId);
 
   const handleEditValueChange = event => {
     const { name, value } = event.target;
@@ -266,11 +338,137 @@ export default function PostView({ headingText = "Post Details" }) {
     }
   };
 
+  const handleAddComment = async event => {
+    event.preventDefault();
+
+    const trimmedComment = newCommentText.trim();
+    if (!trimmedComment || !postId) {
+      return;
+    }
+
+    setIsAddingComment(true);
+    setCommentActionError("");
+    setCommentActionSuccess("");
+
+    try {
+      const response = await fetch(commentsBaseUrl, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          post_id: Number(postId),
+          comment: trimmedComment
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Unable to add comment (${response.status})`);
+      }
+
+      setNewCommentText("");
+      setCommentActionSuccess("Comment added.");
+      await loadComments(postId);
+    } catch (addError) {
+      setCommentActionError(addError.message || "Failed to add comment.");
+    } finally {
+      setIsAddingComment(false);
+    }
+  };
+
+  const startEditingComment = comment => {
+    setEditingCommentId(comment.id);
+    setEditingCommentText(comment.comment);
+    setCommentActionError("");
+    setCommentActionSuccess("");
+  };
+
+  const cancelEditingComment = () => {
+    setEditingCommentId(null);
+    setEditingCommentText("");
+  };
+
+  const handleUpdateComment = async commentId => {
+    const trimmedComment = editingCommentText.trim();
+    if (!trimmedComment) {
+      setCommentActionError("Comment cannot be empty.");
+      return;
+    }
+
+    setIsUpdatingComment(true);
+    setCommentActionError("");
+    setCommentActionSuccess("");
+
+    try {
+      const response = await fetch(`${commentsBaseUrl}/${commentId}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          comment: trimmedComment
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Unable to update comment (${response.status})`);
+      }
+
+      cancelEditingComment();
+      setCommentActionSuccess("Comment updated.");
+      await loadComments(postId);
+    } catch (updateError) {
+      setCommentActionError(updateError.message || "Failed to update comment.");
+    } finally {
+      setIsUpdatingComment(false);
+    }
+  };
+
+  const handleDeleteComment = async commentId => {
+    const shouldDelete = window.confirm("Delete this comment?");
+    if (!shouldDelete) {
+      return;
+    }
+
+    setIsDeletingCommentId(commentId);
+    setCommentActionError("");
+    setCommentActionSuccess("");
+
+    try {
+      const response = await fetch(`${commentsBaseUrl}/${commentId}`, {
+        method: "DELETE",
+        credentials: "include"
+      });
+
+      if (!response.ok) {
+        throw new Error(`Unable to delete comment (${response.status})`);
+      }
+
+      if (editingCommentId === commentId) {
+        cancelEditingComment();
+      }
+      setCommentActionSuccess("Comment deleted.");
+      await loadComments(postId);
+    } catch (deleteError) {
+      setCommentActionError(deleteError.message || "Failed to delete comment.");
+    } finally {
+      setIsDeletingCommentId(null);
+    }
+  };
+
   return (
     <AnimationRevealPage>
       <Header />
       <Container>
         <ContentWithPaddingXl>
+          <TopBackRow>
+            <PrimaryButton as={Link} to="/components/innerPages/PostsIndexPage">
+              Back To Posts
+            </PrimaryButton>
+          </TopBackRow>
+
           <Heading>{headingText}</Heading>
 
           {isLoading && <Description>Loading post details...</Description>}
@@ -403,16 +601,94 @@ export default function PostView({ headingText = "Post Details" }) {
                   </OwnerActionsRow>
                 </Form>
               )}
+
+              <CommentsSection>
+                <CommentsHeading>Comments</CommentsHeading>
+
+                <CommentForm onSubmit={handleAddComment}>
+                  <CommentTextArea
+                    value={newCommentText}
+                    onChange={event => setNewCommentText(event.target.value)}
+                    placeholder="Write a comment..."
+                  />
+                  <SmallActionsRow>
+                    <SmallButton type="submit" disabled={isAddingComment}>
+                      {isAddingComment ? "Posting..." : "Post Comment"}
+                    </SmallButton>
+                  </SmallActionsRow>
+                </CommentForm>
+
+                {commentActionError && <CommentsInfoText>{commentActionError}</CommentsInfoText>}
+                {!commentActionError && commentActionSuccess && <SuccessText>{commentActionSuccess}</SuccessText>}
+                {isCommentsLoading && <CommentsInfoText>Loading comments...</CommentsInfoText>}
+                {!isCommentsLoading && commentsError && <CommentsInfoText>{commentsError}</CommentsInfoText>}
+
+                {!isCommentsLoading && !commentsError && (
+                  <CommentList>
+                    {comments.length === 0 && <CommentsInfoText>No comments yet.</CommentsInfoText>}
+
+                    {comments.map(comment => (
+                      <CommentCard key={comment.id}>
+                        <CommentHeader>
+                          <CommentMeta>
+                            <Label>{comment.author_name}</Label> • {comment.date || "Unknown date"}
+                          </CommentMeta>
+
+                          {canManageComment(comment) && (
+                            <SmallActionsTopRow>
+                              {editingCommentId === comment.id ? (
+                                <>
+                                  <SmallButton
+                                    type="button"
+                                    onClick={() => handleUpdateComment(comment.id)}
+                                    disabled={isUpdatingComment}
+                                  >
+                                    {isUpdatingComment ? "Saving..." : "Save"}
+                                  </SmallButton>
+                                  <SmallButton type="button" onClick={cancelEditingComment}>
+                                    Cancel
+                                  </SmallButton>
+                                </>
+                              ) : (
+                                <>
+                                  <SmallButton type="button" onClick={() => startEditingComment(comment)}>
+                                    Edit
+                                  </SmallButton>
+                                  <SmallDangerButton
+                                    type="button"
+                                    onClick={() => handleDeleteComment(comment.id)}
+                                    disabled={isDeletingCommentId === comment.id}
+                                  >
+                                    {isDeletingCommentId === comment.id ? "Deleting..." : "Delete"}
+                                  </SmallDangerButton>
+                                </>
+                              )}
+                            </SmallActionsTopRow>
+                          )}
+                        </CommentHeader>
+
+                        {editingCommentId === comment.id && canManageComment(comment) ? (
+                          <>
+                            <CommentTextArea
+                              value={editingCommentText}
+                              onChange={event => setEditingCommentText(event.target.value)}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <CommentText>{comment.comment}</CommentText>
+                          </>
+                        )}
+                      </CommentCard>
+                    ))}
+                  </CommentList>
+                )}
+              </CommentsSection>
             </>
           )}
 
           {!isLoading && !error && !post && <Description>Post not found.</Description>}
 
-          <ActionsRow>
-            <PrimaryButton as={Link} to="/components/innerPages/PostsIndexPage">
-              Back To Posts
-            </PrimaryButton>
-          </ActionsRow>
         </ContentWithPaddingXl>
       </Container>
       <Footer />
@@ -426,4 +702,18 @@ function formatDate(date) {
   }
   const options = { year: "numeric", month: "long", day: "numeric" };
   return new Date(date).toLocaleDateString(undefined, options);
+}
+
+function formatDateTime(date) {
+  if (!date) {
+    return "";
+  }
+  const options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  };
+  return new Date(date).toLocaleString(undefined, options);
 }
