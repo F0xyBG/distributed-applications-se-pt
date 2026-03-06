@@ -21,6 +21,10 @@ export const register = async (req, res) => {
 
     res.sendStatus(201);
   } catch (err) {
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.sendStatus(409);
+    }
+
     res.sendStatus(500);
   }
 };

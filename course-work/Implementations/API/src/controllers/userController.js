@@ -32,7 +32,7 @@ export const updateUser = async (req, res) => {
     const isUpdated = await User.updateById(id, updatedFields);
 
     if (!isUpdated) {
-      return res.sendStatus(400);
+      return res.sendStatus(409);
     }
 
     res.sendStatus(200);
