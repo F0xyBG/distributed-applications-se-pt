@@ -49,7 +49,7 @@ class Comment {
 
   static async getByPostId(postId) {
     const query = `
-        SELECT c.id, c.comment, c.date, u.name as author_name
+        SELECT c.id, c.comment, c.date, u.name as author_name, u.id as author_id
         FROM comments c
         JOIN users u ON c.author_id = u.id
         WHERE c.post_id = ?
