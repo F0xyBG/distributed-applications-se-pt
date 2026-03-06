@@ -69,8 +69,8 @@ export const updatePost = async (req, res) => {
   const postId = req.params.id;
   const updatedFields = req.body;
 
-  if (req.file.filename) {
-    updatedFields.image = `http://${HOST_NAME}:${PORT}/public/${req.file.filename}`;
+  if (req.file) {
+    updatedFields.image = `http://${HOST_NAME}:${PORT}/${req.file.filename}`;
   }
 
   try {
