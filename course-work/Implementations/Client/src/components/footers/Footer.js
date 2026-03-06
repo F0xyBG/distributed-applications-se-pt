@@ -2,6 +2,7 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import {Container as ContainerBase } from "components/misc/Layouts.js"
+import Cookies from "js-cookie";
 import logo from "../../images/logo.svg";
 import { ReactComponent as FacebookIcon } from "../../images/facebook-icon.svg";
 import { ReactComponent as TwitterIcon } from "../../images/twitter-icon.svg";
@@ -19,6 +20,10 @@ const LogoText = tw.h5`ml-2 text-2xl font-black tracking-wider`;
 
 const LinksContainer = tw.div`mt-8 font-medium flex flex-wrap justify-center items-center flex-col sm:flex-row`
 const Link = tw.a`border-b-2 border-transparent hocus:text-gray-300 hocus:border-gray-300 pb-1 transition duration-300 mt-2 mx-4`;
+const PrimaryLink = tw(Link)`
+  px-5 py-2 rounded bg-primary-500 text-gray-100 border-b-0
+  hocus:bg-primary-700 hocus:text-gray-200
+`;
 
 const SocialLinksContainer = tw.div`mt-10`;
 const SocialLink = styled.a`
@@ -29,37 +34,48 @@ const SocialLink = styled.a`
 `;
 
 const CopyrightText = tw.p`text-center mt-10 font-medium tracking-wide text-sm text-gray-600`
+
+const ProcessSignOut = async () => {
+  await fetch(`${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+  Cookies.remove("user_id");
+};
+
 export default () => {
+  const hasClientSession =
+    typeof window !== "undefined" && Cookies.get("user_id") !== undefined;
+
   return (
     <Container>
       <Content>
         <Row>
           <LogoContainer>
             <LogoImg src={logo} />
-            <LogoText>Treact</LogoText>
+            <LogoText>PetFinder</LogoText>
           </LogoContainer>
           <LinksContainer>
-            <Link href="#">Home</Link>
-            <Link href="#">About</Link>
-            <Link href="#">Contact Us</Link>
-            <Link href="#">Blog</Link>
-            <Link href="#">Reviews</Link>
+            {hasClientSession && <Link href="/">Home</Link>}
+            {hasClientSession && <Link href="/posts">Posts</Link>}
+            {hasClientSession && <Link href="/createPost">Create Post</Link>}
+            {hasClientSession && <Link href="/userPosts">User Posts</Link>}
+            {hasClientSession && <Link href="/profile">Profile</Link>}
+
+            {!hasClientSession && <Link href="/login">Login</Link>}
+            {!hasClientSession && <PrimaryLink href="/signup">Sign Up</PrimaryLink>}
+
+            {hasClientSession && (
+              <PrimaryLink href="/" onClickCapture={ProcessSignOut}>
+                Sign Out
+              </PrimaryLink>
+            )}
           </LinksContainer>
-          <SocialLinksContainer>
-            <SocialLink href="https://facebook.com">
-              <FacebookIcon />
-            </SocialLink>
-            <SocialLink href="https://twitter.com">
-              <TwitterIcon />
-            </SocialLink>
-            <SocialLink href="https://youtube.com">
-              <YoutubeIcon />
-            </SocialLink>
-          </SocialLinksContainer>
-          <CopyrightText>
-            &copy; Copyright 2020, Treact Inc. All Rights Reserved.
-          </CopyrightText>
         </Row>
+        
+          <CopyrightText>
+            &copy; Copyright 2026, Petfinder All Rights Reserved.
+          </CopyrightText>
       </Content>
     </Container>
   );

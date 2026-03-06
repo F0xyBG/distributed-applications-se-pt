@@ -91,24 +91,24 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
         <NavLink href="/">Home</NavLink>
       )}
       {hasClientSession && (
-        <NavLink href="/components/innerPages/PostsIndexPage">Posts</NavLink>
+        <NavLink href="/posts">Posts</NavLink>
       )}
       {hasClientSession && (
-        <NavLink href="/components/innerPages/CreatePostPage">Create Post</NavLink>
+        <NavLink href="/createPost">Create Post</NavLink>
       )}
       {hasClientSession && (
-        <NavLink href="/components/innerPages/UserPosts">User Posts</NavLink>
+        <NavLink href="/userPosts">User Posts</NavLink>
       )}
       {hasClientSession && (
         <NavLink href="/profile">Profile</NavLink>
       )}
       {!hasClientSession && (
-        <NavLink href="/components/innerPages/LoginPage" tw="lg:ml-12!">
+        <NavLink href="/login" tw="lg:ml-12!">
           Login
         </NavLink>
       )}
       {!hasClientSession && (
-        <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/components/innerPages/SignupPage">
+        <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/signup">
           Sign Up
         </PrimaryLink>
       )}

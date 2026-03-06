@@ -4,7 +4,7 @@ import tw from "twin.macro";
 //eslint-disable-next-line
 import { css } from "styled-components/macro";
 
-import Header from "../headers/light.js";
+import Header from "../headers/Header.js";
 
 import { ReactComponent as SvgDecoratorBlob1 } from "../../images/svg-decorator-blob-1.svg";
 import DesignIllustration from "../../images/design-illustration-2.svg";
@@ -53,20 +53,11 @@ export default ({ roundedHeaderButton }) => {
         <TwoColumn>
           <LeftColumn>
             <Heading>
-              Beautiful React Templates <span tw="text-primary-500">for you.</span>
+              <span tw="text-primary-500">Petfinder</span> 
             </Heading>
             <Paragraph>
-              Our templates are easy to setup, understand and customize. Fully modular components with a variety of
-              pages and components.
+              A public forum for posting your lost pets and finding them again. Our platform connects pet owners across the community, providing a safe and reliable space to report missing animals, share photos, and reunite beloved pets with their families. If your furry friend has wandered off, Petfinder helps you spread the word quickly and effectively to bring your pets home.
             </Paragraph>
-            <Actions>
-              <input type="text" placeholder="Your E-mail Address" />
-              <button>Get Started</button>
-            </Actions>
-            <CustomersLogoStrip>
-              <p>Our TRUSTED Customers</p>
-              <img src={CustomersLogoStripImage} alt="Our Customers" />
-            </CustomersLogoStrip>
           </LeftColumn>
           <RightColumn>
             <IllustrationContainer>

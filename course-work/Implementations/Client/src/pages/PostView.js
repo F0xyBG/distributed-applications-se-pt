@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import { Container, ContentWithPaddingXl } from "components/misc/Layouts";
 import tw from "twin.macro";
-import Header from "components/headers/light.js";
-import Footer from "components/footers/FiveColumnWithInputForm.js";
+import Header from "components/headers/Header.js";
+import Footer from "components/footers/Footer.js";
 import { SectionHeading } from "components/misc/Headings";
 import { PrimaryButton } from "components/misc/Buttons";
 import Cookies from "js-cookie";
@@ -330,7 +330,7 @@ export default function PostView({ headingText = "Post Details" }) {
         throw new Error(`Unable to delete post (${response.status})`);
       }
 
-      navigate("/components/innerPages/PostsIndexPage");
+      navigate("/posts");
     } catch (deleteError) {
       setError(deleteError.message || "Failed to delete post.");
     } finally {
@@ -464,7 +464,7 @@ export default function PostView({ headingText = "Post Details" }) {
       <Container>
         <ContentWithPaddingXl>
           <TopBackRow>
-            <PrimaryButton as={Link} to="/components/innerPages/PostsIndexPage">
+            <PrimaryButton as={Link} to="/posts">
               Back To Posts
             </PrimaryButton>
           </TopBackRow>

@@ -45,7 +45,7 @@ export default ({
   headingText = "Sign In To PetFinder",
   submitButtonText = "Sign In",
   SubmitButtonIcon = LoginIcon,
-  signupUrl = "/components/innerPages/SignupPage",
+  signupUrl = "/signup",
 
 }) => {
   const navigate = useNavigate();

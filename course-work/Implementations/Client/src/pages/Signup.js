@@ -58,9 +58,7 @@ export default ({
   ],
   submitButtonText = "Sign Up",
   SubmitButtonIcon = SignUpIcon,
-  tosUrl = "#",
-  privacyPolicyUrl = "#",
-  signInUrl = "/components/innerPages/LoginPage"
+  signInUrl = "/login"
 }) => {
   const navigate = useNavigate();
 
@@ -100,7 +98,7 @@ export default ({
     })
     .then(data => {
       if(data.ok) {
-        navigate("/components/innerPages/LoginPage", { replace: true });
+        navigate("/login", { replace: true });
       } else if (data.status === 409) {
         setUsernameError('This username is already taken.');
       }
