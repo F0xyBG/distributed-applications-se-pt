@@ -24,6 +24,7 @@ const FormContainer = tw.div`w-full flex-1 mt-8`;
 
 const Form = tw.form`mx-auto max-w-xs`;
 const Input = tw.input`w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5 first:mt-0`;
+const ErrorText = tw.p`mt-2 text-sm text-red-600`;
 const SubmitButton = styled.button`
   ${tw`mt-5 tracking-wide font-semibold bg-primary-500 text-gray-100 w-full py-4 rounded-lg hover:bg-primary-900 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none`}
   .icon {
@@ -68,6 +69,7 @@ export default ({
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
+  const [usernameError, setUsernameError] = useState('');
   
   const isAdult = () => {
     if (!dateOfBirth) return false;
@@ -84,6 +86,7 @@ export default ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setUsernameError('');
     
     const backendUrl = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}/auth/register`;
     console.log('Submitting to:', backendUrl);
@@ -96,8 +99,11 @@ export default ({
       body: JSON.stringify({ username, password, name, phone, isAdult: isAdult() })
     })
     .then(data => {
-      console.log('Success:', data);
-      navigate("/components/innerPages/LoginPage", { replace: true });
+      if(data.ok) {
+        navigate("/components/innerPages/LoginPage", { replace: true });
+      } else if (data.status === 409) {
+        setUsernameError('This username is already taken.');
+      }
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -117,7 +123,21 @@ export default ({
             <FormContainer>
               <Form onSubmit={handleSubmit}>
                 <label htmlFor="username-input">Username</label>
-                <Input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+                <Input
+                  id="username-input"
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  aria-invalid={Boolean(usernameError)}
+                  onChange={e => {
+                    setUsername(e.target.value);
+                    if (usernameError) {
+                      setUsernameError('');
+                    }
+                  }}
+                  style={usernameError ? { borderColor: "#dc2626" } : undefined}
+                />
+                {usernameError && <ErrorText>{usernameError}</ErrorText>}
                 <label htmlFor="password-input">Password</label>
                 <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
                 <label htmlFor="name-input">Name</label>

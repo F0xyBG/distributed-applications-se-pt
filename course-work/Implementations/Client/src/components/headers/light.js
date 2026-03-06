@@ -97,6 +97,9 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
         <NavLink href="/components/innerPages/CreatePostPage">Create Post</NavLink>
       )}
       {hasClientSession && (
+        <NavLink href="/profile">Profile</NavLink>
+      )}
+      {hasClientSession && (
         <NavLink href="/#">Contact Us</NavLink>
       )}
       {!hasClientSession && (
