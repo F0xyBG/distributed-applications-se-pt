@@ -26,6 +26,7 @@ import AboutUsPage from "pages/AboutUs.js";
 import ContactUsPage from "pages/ContactUs.js";
 import PostsIndexPage from "pages/PostsIndex.js";
 import CreatePostPage from "pages/CreatePost.js";
+import UserPosts from "pages/UserPosts.js";
 import TermsOfServicePage from "pages/TermsOfService.js";
 import PrivacyPolicyPage from "pages/PrivacyPolicy.js";
 
@@ -176,6 +177,10 @@ export const components = {
     CreatePostPage: {
       component: CreatePostPage,
       url: `/components/innerPages/CreatePostPage`,
+    },
+    UserPosts: {
+      component: UserPosts,
+      url: `/components/innerPages/UserPosts`,
     },
     TermsOfServicePage: {
       component: TermsOfServicePage,
