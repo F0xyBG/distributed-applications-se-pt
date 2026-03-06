@@ -288,22 +288,15 @@ app.get('/posts', authenticateToken, postController.getAllPosts);
 
 /**
  * @swagger
- * /posts/{id}:
+ * /posts/user:
  *   get:
- *     summary: Get posts by user ID
+ *     summary: Get current user's posts
  *     tags: [Posts]
  *     security:
  *       - cookieAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: User ID
  *     responses:
  *       200:
- *         description: User's posts retrieved successfully
+ *         description: Current user's posts retrieved successfully
  *         content:
  *           application/json:
  *             schema:
@@ -315,7 +308,36 @@ app.get('/posts', authenticateToken, postController.getAllPosts);
  *       500:
  *         description: Internal server error
  */
-app.get('/posts/:id', authenticateToken, postController.getUserPosts);
+app.get('/posts/user', authenticateToken, postController.getUserPosts);
+
+/**
+ * @swagger
+ * /posts/{id}:
+ *   get:
+ *     summary: Get a single post by ID
+ *     tags: [Posts]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Post ID
+ *     responses:
+ *       200:
+ *         description: Post retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Post'
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
+app.get('/posts/:id', authenticateToken, postController.getPost);
 
 /**
  * @swagger

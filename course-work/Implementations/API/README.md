@@ -133,7 +133,8 @@ http://localhost:3000/api-docs
 | Method | Endpoint     | Description               | Auth Required |
 | ------ | ------------ | ------------------------- | ------------- |
 | GET    | `/posts`     | Get all unfound pet posts | ✅            |
-| GET    | `/posts/:id` | Get user's own posts      | ✅            |
+| GET    | `/posts/user` | Get current user's posts  | ✅            |
+| GET    | `/posts/:id` | Get single post by ID     | ✅            |
 | POST   | `/posts`     | Create a new post         | ✅            |
 | PATCH  | `/posts/:id` | Update a post             | ✅            |
 | DELETE | `/posts/:id` | Delete a post             | ✅            |

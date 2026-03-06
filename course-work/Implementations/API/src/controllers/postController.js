@@ -12,6 +12,19 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
+export const getPost = async (req, res) => {
+  const postId = req.params.id;
+
+  try {
+    const post = await Post.findById(postId);
+
+    res.status(200).json(post);
+  } catch (err) {
+    console.log(err.message);
+    res.sendStatus(500);
+  }
+};
+
 export const getUserPosts = async (req, res) => {
   const id = req.user.id;
 
