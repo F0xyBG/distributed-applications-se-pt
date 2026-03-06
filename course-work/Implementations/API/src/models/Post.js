@@ -104,7 +104,16 @@ class Post {
   }
 
   static async findById(id) {
-    const query = 'SELECT * FROM posts WHERE id = ?';
+    const query = `
+            SELECT 
+                p.*,
+                u.name AS author_name,
+                u.phone AS author_phone
+            FROM posts p
+            JOIN users u ON p.author_id = u.id
+            WHERE p.id = ?
+            ORDER BY p.date DESC;
+        `;
     const [rows] = await this.#connection.execute(query, [id]);
 
     return rows.length ? rows[0] : null;
