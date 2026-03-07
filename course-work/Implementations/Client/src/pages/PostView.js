@@ -176,10 +176,8 @@ export default function PostView({ headingText = "Post Details" }) {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [postId]);
 
-  useEffect(() => {
-    loadComments(postId);
+      loadComments(postId);
   }, [postId]);
 
   if (!userId) {
