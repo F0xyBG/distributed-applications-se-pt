@@ -60,7 +60,6 @@ export default function PostView({ headingText = "Post Details" }) {
   const [editValues, setEditValues] = useState({
     title: "",
     description: "",
-    category: "dog",
     lostAt: "",
     isFound: false
   });
@@ -166,7 +165,6 @@ export default function PostView({ headingText = "Post Details" }) {
         setEditValues({
           title: fetchedPost.title || "",
           description: fetchedPost.description || "",
-          category: fetchedPost.category || "dog",
           lostAt: fetchedPost.lostAt || "",
           isFound: Boolean(fetchedPost.isFound)
         });
@@ -208,7 +206,6 @@ export default function PostView({ headingText = "Post Details" }) {
     const currentValues = {
       title: post.title || "",
       description: post.description || "",
-      category: post.category || "",
       lostAt: post.lostAt || "",
       isFound: Boolean(post.isFound)
     };
@@ -216,7 +213,6 @@ export default function PostView({ headingText = "Post Details" }) {
     const nextValues = {
       title: editValues.title,
       description: editValues.description,
-      category: editValues.category,
       lostAt: editValues.lostAt,
       isFound: Boolean(editValues.isFound)
     };
@@ -541,16 +537,6 @@ export default function PostView({ headingText = "Post Details" }) {
                   </FormRow>
 
                   <FormRow>
-                    <InputLabel htmlFor="category-input">Category</InputLabel>
-                    <SelectInput id="category-input" name="category" value={editValues.category} onChange={handleEditValueChange}>
-                      <option value="dog">Dog</option>
-                      <option value="cat">Cat</option>
-                      <option value="parrot">Parrot</option>
-                      <option value="snake">Snake</option>
-                    </SelectInput>
-                  </FormRow>
-
-                  <FormRow>
                     <InputLabel htmlFor="lostAt-input">Lost At</InputLabel>
                     <TextInput id="lostAt-input" name="lostAt" value={editValues.lostAt} onChange={handleEditValueChange} />
                   </FormRow>
@@ -589,7 +575,6 @@ export default function PostView({ headingText = "Post Details" }) {
                         setEditValues({
                           title: post.title || "",
                           description: post.description || "",
-                          category: post.category || "dog",
                           lostAt: post.lostAt || "",
                           isFound: Boolean(post.isFound)
                         });
