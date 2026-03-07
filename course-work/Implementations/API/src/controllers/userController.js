@@ -29,14 +29,13 @@ export const updateUser = async (req, res) => {
       updatedFields.password = await bcrypt.hash(updatedFields.password, SALT_ROUNDS);
     }
 
-    const isUpdated = await User.updateById(id, updatedFields);
-
-    if (!isUpdated) {
-      return res.sendStatus(409);
-    }
+    await User.updateById(id, updatedFields);
 
     res.sendStatus(200);
   } catch (err) {
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.sendStatus(409);
+    }
     console.log(err.message);
     res.sendStatus(500);
   }
